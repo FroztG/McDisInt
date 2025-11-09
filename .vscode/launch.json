@@ -8,7 +8,7 @@
             "type": "vscode-chat-replay",
             "request": "launch",
             "name": "Debug Chat Replay",
-            "program": "${disc.py}",
+            "program": "${file}",
             "stopOnEntry": true
         }
     ]
