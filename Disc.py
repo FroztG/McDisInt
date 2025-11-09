@@ -3,21 +3,29 @@ import subprocess
 
 app = Flask(__name__)
 
+JAR_FILE = 'nombre_del_archivo.jar'
+JAVA_COMMAND = [
+    'java',
+    '-Xmx12G',
+    '-Xms12G',
+    '-jar',
+    JAR_FILE
+]
+
 @app.route('/encender-servidor', methods=['POST'])
 def encender_servidor():
+    """
+    Inicia el servidor Java en un proceso de fondo.
+    Usa Popen para evitar bloquear la respuesta de la API.
+    """
     try:
-        # Ejecutar el comando Java con los parámetros que utilizas
-        comando = [
-            'java',
-            '-Xmx12G',
-            '-Xms12G',
-            '-jar',
-            'nombre_del_archivo.jar'
-        ]
-        subprocess.Popen(comando, check=True)
+        # subprocess.Popen no bloquea la ejecución.
+        # El servidor se iniciará en segundo plano.
+        subprocess.Popen(JAVA_COMMAND)
         return jsonify({'mensaje': 'Servidor encendido correctamente'}), 200
     except Exception as e:
         return jsonify({'mensaje': 'Error al encender el servidor', 'error': str(e)}), 500
+
 
 @app.route('/apagar-servidor', methods=['POST'])
 def apagar_servidor():
